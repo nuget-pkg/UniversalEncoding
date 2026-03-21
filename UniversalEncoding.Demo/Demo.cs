@@ -1,18 +1,24 @@
-﻿using System;
-using Global;
-using static Global.EasyObjectClassic;
-using NUnit.Framework;
+﻿using Global;
+using System;
+using System.Text;
+using static Global.EasyObject;
+using static Global.UniversalTransformer;
 
-// ReSharper disable once CheckNamespace
 namespace Demo;
 
-// ReSharper disable once ArrangeTypeModifiers
-static class Program
-{
-    // ReSharper disable once ArrangeTypeMemberModifiers
-    static void Main(string[] args)
-    {
-        Echo(new { args = args });
-        Echo(UniversalEncoding.Add2(11, 22));
-   }
+static class Program {
+    static void Main(string[] args) {
+        try {
+            SetupConsoleEncoding(Encoding.UTF8);
+            UseAnsiConsole = true;
+            DebugOutput = true;
+            string fname = """[1080p] <xml>aaa</xml> ; {Title}!? x=11+22-33; ,(🔥引火帝国🔥):"name1" 'name2'?.txt""";
+            Log(SafeFileName(fname), "⁅markup⁆[blue]adjusted file name[/]");
+            Log(SafeFileName(fname, replaceSurrogate: ""), "⁅markup⁆[green]adjusted file name (keeping surrogate pairs)[/]");
+            Log(SafeFileName(fname, replaceSurrogate: "@"), "⁅markup⁆[purple]adjusted file name (spicifying surrogate pairs' replacement)[/]");
+        }
+        catch (Exception ex) {
+            Sys.Crash(ex);
+        }
+    }
 }
