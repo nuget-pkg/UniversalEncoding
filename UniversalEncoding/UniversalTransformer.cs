@@ -1,13 +1,106 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Global;
 
-public class UniversalTransformer {
+public static class UniversalTransformer {
     public static int Add2(int a, int b) {
         return a + b;
     }
+    public static string UnicodeEacape(string text) {
+        var sb = new StringBuilder();
+        sb.Length = 0;
+        if (sb.Capacity < text.Length + (text.Length / 10)) {
+            sb.Capacity = text.Length + (text.Length / 10);
+        }
+        foreach (char c in text) {
+            if (c > 127) {
+                ushort val = c;
+                sb.Append("\\u").Append(val.ToString("X4"));
+            } else {
+                sb.Append(c);
+            }
+        }
+        string result = sb.ToString();
+        sb.Length = 0;
+        return result;
+    }
+    public static string UnicodeUnescape(string text) {
+        return Regex.Unescape(text);
+    }
+    //public static string ParseJsonStringDouble(string aJson) {
+    //    var i = 0;
+    //    var token = new StringBuilder();
+    //    var quoteMode = false;
+    //    while (i < aJson.Length) {
+    //        switch (aJson[i]) {
+
+    //            case '"':
+    //                quoteMode ^= true;
+    //                break;
+
+    //            case '\r':
+    //            case '\n':
+    //                break;
+
+    //            case ' ':
+    //            case '\t':
+    //                if (quoteMode) {
+    //                    token.Append(aJson[i]);
+    //                }
+
+    //                break;
+
+    //            case '\\':
+    //                ++i;
+    //                if (quoteMode) {
+    //                    char c = aJson[i];
+    //                    switch (c) {
+    //                        case 't':
+    //                            token.Append('\t');
+    //                            break;
+    //                        case 'r':
+    //                            token.Append('\r');
+    //                            break;
+    //                        case 'n':
+    //                            token.Append('\n');
+    //                            break;
+    //                        case 'b':
+    //                            token.Append('\b');
+    //                            break;
+    //                        case 'f':
+    //                            token.Append('\f');
+    //                            break;
+    //                        case 'u': {
+    //                                string s = aJson.Substring(i + 1, 4);
+    //                                token.Append((char)int.Parse(
+    //                                    s,
+    //                                    System.Globalization.NumberStyles.AllowHexSpecifier));
+    //                                i += 4;
+    //                                break;
+    //                            }
+    //                        default:
+    //                            token.Append(c);
+    //                            break;
+    //                    }
+    //                }
+    //                break;
+
+    //            case '\uFEFF': // remove / ignore BOM (Byte Order Mark)
+    //                break;
+
+    //            default:
+    //                token.Append(aJson[i]);
+    //                break;
+    //        }
+    //        ++i;
+    //    }
+    //    return quoteMode ? throw new Exception("My Parse: Quotation marks seems to be messed up.") : token.ToString();
+    //}
     public static List<int> FindCharacterOccurrences(string input, char targetChar) {
         List<int> occurrences = input
             .Select((character, index) => new { character, index })
@@ -39,13 +132,35 @@ public class UniversalTransformer {
 #endif
         return str;
     }
+    public static string SafeBaseName(string baseName) {
+        // [⭕ファイル名に使えない文字 - Google](https://bit.ly/invalid-filename-chars)
+        // \ / : * ? " < > |
+        baseName = baseName
+            .Replace("\\", "￥")
+            .Replace("/", "／")
+            .Replace(":", "：")
+            .Replace("*", "＊")
+            .Replace("?", "❓")
+            .Replace("\"", "“")
+            .Replace("<", "≪")
+            .Replace(">", "≫")
+            .Replace("|", "￤")
+            .Replace("!", "❗") // Not necessary; but NO ONE USE this charcter for filename!
+            ;
+        return baseName;
+    }
     public static string SafeSourceCode(
-        string codeString,
+        string text,
+        bool unicodeEacape = true,
+        bool oneLine = true,
         bool dontReplacePeriod = false,
         bool dontReplaceComma = false
         ) {
-        codeString = JustOneLineFeed(codeString);
-        codeString = codeString
+        text = JustOneLineFeed(text);
+        if (unicodeEacape) {
+            text = UnicodeEacape(text);
+        }
+        text = text
             .Replace("!", "❗")
             .Replace("?", "❓")
 
@@ -85,12 +200,61 @@ public class UniversalTransformer {
             .Replace("=", "＝")
             ;
         if (!dontReplacePeriod) {
-            codeString = codeString.Replace(".", "．");
+            text = text.Replace(".", "．");
         }
         if (!dontReplaceComma) {
-            codeString = codeString.Replace(",", "，");
+            text = text.Replace(",", "，");
         }
-        return codeString;
+        if (oneLine) {
+            text = text.Replace("\n", "↩");
+        }
+        return text;
+    }
+    public static string RestoreSourceCode(string safeCode) {
+        string restored = safeCode;
+        restored =
+            restored
+            .Replace("↩", "\n")
+            .Replace("❗", "!")
+            .Replace("❓", "?")
+
+            .Replace("“", "\"")
+            .Replace("‘", "'")
+            .Replace("｀", "`")
+
+            .Replace("＃", "#")
+            .Replace("％", "%")
+            .Replace("＆", "&")
+
+            .Replace("＾", "^")
+            .Replace("～", "~")
+
+            .Replace("＼", "\\")
+            .Replace("￤", "|")
+
+            .Replace("；", ";")
+            .Replace("：", ":")
+
+            .Replace("﴾", "(")
+            .Replace("﴿", ")")
+
+            .Replace("⁅", "[")
+            .Replace("⁆", "]")
+
+            .Replace("꒰", "{")
+            .Replace("꒱", "}")
+
+            .Replace("≪", "<")
+            .Replace("≫", ">")
+
+            .Replace("＋", "+")
+            .Replace("ー", "-")
+            .Replace("＊", "*")
+            .Replace("／", "/")
+            .Replace("＝", "=")
+            ;
+        restored = UnicodeUnescape(restored);
+        return restored;
     }
     private static string _PrettyQuotesPairs(string fileName) {
         var occurrences = FindCharacterOccurrences(fileName, '“');
@@ -112,6 +276,7 @@ public class UniversalTransformer {
         ) {
         fileName = SafeSourceCode(
             fileName,
+            unicodeEacape: false,
             dontReplacePeriod: true,
             dontReplaceComma: false
             );
