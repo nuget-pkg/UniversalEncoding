@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -32,7 +32,6 @@ public class UniversalTransformer {
         bool dontReplaceComma = false
         ) {
         codeString = codeString
-
             .Replace("!", "❗")
             .Replace("?", "❓")
 
@@ -64,7 +63,6 @@ public class UniversalTransformer {
 
             .Replace("<", "≪")
             .Replace(">", "≫")
-            .Replace("＜", "≪")
 
             .Replace("+", "＋")
             .Replace("-", "ー")
@@ -78,7 +76,6 @@ public class UniversalTransformer {
         if (!dontReplaceComma) {
             codeString = codeString.Replace(",", "，");
         }
-        //
         return codeString;
     }
     public static string SafeFileName(string fileName, string replaceSurrogate = "✅") {
