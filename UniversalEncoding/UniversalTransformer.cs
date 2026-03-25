@@ -83,7 +83,7 @@ public static class UniversalTransformer {
     public static string SafeSourceCode(
         string text,
         bool unicodeEacape = true,
-        bool oneLine = true,
+        bool asSingleLine = false,
         bool dontReplacePeriod = false,
         bool dontReplaceComma = false
         ) {
@@ -136,7 +136,7 @@ public static class UniversalTransformer {
         if (!dontReplaceComma) {
             text = text.Replace(",", "，");
         }
-        if (oneLine) {
+        if (asSingleLine) {
             text = text.Replace("\n", "↩");
         }
         return text;

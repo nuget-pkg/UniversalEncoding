@@ -38,7 +38,7 @@ static class Program {
             Log(safeCode1, "safeCode1");
             string safeCode2 = SafeSourceCode(code, unicodeEacape: false); // DON'T USE `unicodeEacape: false` if you have PLAN OF RESTORING!
             Log(safeCode2, "safeCode2");
-            string safeCode3 = SafeSourceCode(code, oneLine: true);
+            string safeCode3 = SafeSourceCode(code, asSingleLine: true);
             Log(safeCode3, "safeCode3");
 
             string restoredCode1 = RestoreSourceCode(safeCode1);
