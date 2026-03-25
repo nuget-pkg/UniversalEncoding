@@ -16,6 +16,39 @@ public class UniversalTransformer {
         return str;
     }
     public static string SafeFileName(string fileName, string replaceSurrogate = "★") {
+        /*
+        renamed:    assets/#AI STATION#😀『 六本木純情派／荻野目洋子』1986年作品😀【AIが歌う名曲】#荻野目洋子【ID=KW-Y_BvNbw0】#1920x1080#.mp4 -> assets/《AI STATION》😀『 六本木純情派／荻野目洋子』1986年作品😀【AIが歌う名曲】#荻野目洋子【ID=KW-Y_BvNbw0】〔1920x1080〕.mp4
+        renamed:    assets/#AI STATION#😀『 六本木純情派／荻野目洋子』1986年作品😀【AIが歌う名曲】#荻野目洋子【ID=KW-Y_BvNbw0】#854x480#.mp4 -> assets/《AI STATION》😀『 六本木純情派／荻野目洋子』1986年作品😀【AIが歌う名曲】#荻野目洋子【ID=KW-Y_BvNbw0】〔854x480〕.mp4
+         */
+        //〔〕
+        /*
+❢
+“
+‘
+＃
+％
+＆
+《
+》
+＾
+～
+＼
+￤
+｀
+；
+：
+＊
+〔
+〕
+〘
+〙
+≪
+≫
+／
+❔
+，
+＋
+         */
         fileName = fileName
             .Replace("!", "❢")
             .Replace("！", "❢")
@@ -24,10 +57,10 @@ public class UniversalTransformer {
             .Replace("#", "＃")
             .Replace("%", "％")
             .Replace("&", "＆")
-            .Replace("(", "｟")
-            .Replace(")", "｠")
-            .Replace("（", "｟")
-            .Replace("）", "｠")
+            .Replace("(", "《")
+            .Replace(")", "》")
+            .Replace("（", "《")
+            .Replace("）", "》")
             .Replace("^", "＾")
             .Replace("~", "～")
             .Replace("\\", "＼")
@@ -37,10 +70,10 @@ public class UniversalTransformer {
             .Replace(";", "；")
             .Replace(":", "：")
             .Replace("*", "＊")
-            .Replace("[", "⁅")
-            .Replace("]", "⁆")
-            .Replace("［", "⁅")
-            .Replace("］", "⁆")
+            .Replace("[", "〔")
+            .Replace("]", "〕")
+            .Replace("［", "〔")
+            .Replace("］", "〕")
             .Replace("{", "〘")
             .Replace("}", "〙")
             .Replace("｛", "〘")
