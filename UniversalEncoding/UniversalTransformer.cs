@@ -92,8 +92,18 @@ public class UniversalTransformer {
             ;
         fileName = ReplaceSurrogatePair(fileName, replaceSurrogate);
         var numbers = FindCharacterOccurrences(fileName, '“');
-        //Console.WriteLine(numbers);
         numbers.ForEach(n => Console.WriteLine(n));
+        char[] array = fileName.ToCharArray();
+        //array[1] = 'p'; // Modify the character at index 1 to 'p'
+        int pairCount = numbers.Count / 2;
+        for (int i = 0; i < pairCount; i++) {
+            int pairA = numbers[i * 2 + 0];
+            int pairB = numbers[i * 2 + 1];
+            Console.WriteLine(array[pairA] + " " + array[pairB]);
+            array[pairA] = '❝';
+            array[pairB] = '❞';
+        }
+        fileName = new string(array);
         return fileName;
     }
     public static string SafeMetaData(string metadata, string replaceSurrogate = "★") {
