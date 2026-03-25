@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Drawing;
+using System.Text.RegularExpressions;
 
 namespace Global;
 
@@ -15,78 +16,68 @@ public class UniversalTransformer {
         str = str.Replace("{ddbea68e-d93f-4e85-92b5-83b1ace6d50f}", replaceSurrogate);
         return str;
     }
-    public static string SafeFileName(string fileName, string replaceSurrogate = "★") {
-        /*
-        renamed:    assets/#AI STATION#😀『 六本木純情派／荻野目洋子』1986年作品😀【AIが歌う名曲】#荻野目洋子【ID=KW-Y_BvNbw0】#1920x1080#.mp4 -> assets/《AI STATION》😀『 六本木純情派／荻野目洋子』1986年作品😀【AIが歌う名曲】#荻野目洋子【ID=KW-Y_BvNbw0】〔1920x1080〕.mp4
-        renamed:    assets/#AI STATION#😀『 六本木純情派／荻野目洋子』1986年作品😀【AIが歌う名曲】#荻野目洋子【ID=KW-Y_BvNbw0】#854x480#.mp4 -> assets/《AI STATION》😀『 六本木純情派／荻野目洋子』1986年作品😀【AIが歌う名曲】#荻野目洋子【ID=KW-Y_BvNbw0】〔854x480〕.mp4
-         */
-        //〔〕
-        /*
-❢
-“
-‘
-＃
-％
-＆
-《
-》
-＾
-～
-＼
-￤
-｀
-；
-：
-＊
-〔
-〕
-〘
-〙
-≪
-≫
-／
-❔
-，
-＋
-         */
-        fileName = fileName
-            .Replace("!", "❢")
-            .Replace("！", "❢")
+    public static string SafeSourceCode(
+        string codeString,
+        bool dontReplacePeriod = false,
+        bool dontReplaceComma = false
+        ) {
+        codeString = codeString
+
+            .Replace("!", "❗")
+            .Replace("?", "❓")
+
             .Replace("\"", "“")
             .Replace("'", "‘")
+            .Replace("`", "｀")
+
             .Replace("#", "＃")
             .Replace("%", "％")
             .Replace("&", "＆")
-            .Replace("(", "《")
-            .Replace(")", "》")
-            .Replace("（", "《")
-            .Replace("）", "》")
+
             .Replace("^", "＾")
             .Replace("~", "～")
+
             .Replace("\\", "＼")
             .Replace("|", "￤")
-            .Replace("｜", "￤")
-            .Replace("`", "｀")
+
             .Replace(";", "；")
             .Replace(":", "：")
-            .Replace("*", "＊")
-            .Replace("[", "〔")
-            .Replace("]", "〕")
-            .Replace("［", "〔")
-            .Replace("］", "〕")
-            .Replace("{", "〘")
-            .Replace("}", "〙")
-            .Replace("｛", "〘")
-            .Replace("｝", "〙")
+
+            .Replace("(", "﴾")
+            .Replace(")", "﴿")
+
+            .Replace("[", "⁅")
+            .Replace("]", "⁆")
+
+            .Replace("{", "꒰")
+            .Replace("}", "꒱")
+
             .Replace("<", "≪")
             .Replace(">", "≫")
             .Replace("＜", "≪")
-            .Replace("＞", "≫")
-            .Replace("/", "／")
-            .Replace("?", "❔")
-            .Replace("？", "❔")
-            .Replace(",", "，")
+
             .Replace("+", "＋")
+            .Replace("-", "ー")
+            .Replace("*", "＊")
+            .Replace("/", "／")
+            .Replace("=", "＝")
+            ;
+        if (!dontReplacePeriod) {
+            codeString = codeString.Replace(".", "．");
+        }
+        if (!dontReplaceComma) {
+            codeString = codeString.Replace(",", "，");
+        }
+        //
+        return codeString;
+    }
+    public static string SafeFileName(string fileName, string replaceSurrogate = "★") {
+        fileName = SafeSourceCode(
+            fileName,
+            dontReplacePeriod: true,
+            dontReplaceComma: false
+            );
+        fileName = fileName
             .Replace("　", " ")
             ;
         fileName = ReplaceSurrogatePair(fileName, replaceSurrogate);
