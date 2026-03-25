@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -17,7 +16,7 @@ public class UniversalTransformer {
             .ToList();
         return occurrences;
     }
-    public static string ReplaceSurrogatePair(string str, string replaceSurrogate = "★") {
+    public static string ReplaceSurrogatePair(string str, string replaceSurrogate = "✅") {
         if (replaceSurrogate == "") {
             return str;
         }
@@ -26,11 +25,26 @@ public class UniversalTransformer {
         str = str.Replace("{ddbea68e-d93f-4e85-92b5-83b1ace6d50f}", replaceSurrogate);
         return str;
     }
+    public static string JustOneLineFeed(string code) {
+        code = code.Replace("\r\n", "\n");
+        code = code.Replace("\r", "\n");
+        return code;
+    }
+    public static string JustOneSpace(string str) {
+        str = Regex.Replace(str, @"\s+", " ");
+#if true
+        str = Regex.Replace(str, @"[ ]*↩[ ]*", "↩");
+#else
+        str = str.Replace(" ↩", "↩").Replace("↩ ", "↩");
+#endif
+        return str;
+    }
     public static string SafeSourceCode(
         string codeString,
         bool dontReplacePeriod = false,
         bool dontReplaceComma = false
         ) {
+        codeString = JustOneLineFeed(codeString);
         codeString = codeString
             .Replace("!", "❗")
             .Replace("?", "❓")
@@ -78,37 +92,54 @@ public class UniversalTransformer {
         }
         return codeString;
     }
-    public static string SafeFileName(string fileName, string replaceSurrogate = "✅") {
-        fileName = SafeSourceCode(
-            fileName,
-            dontReplacePeriod: true,
-            dontReplaceComma: false
-            );
-        fileName = fileName
-            .Replace("　", " ")
-            ;
-        fileName = ReplaceSurrogatePair(fileName, replaceSurrogate);
-        var numbers = FindCharacterOccurrences(fileName, '“');
-        //numbers.ForEach(n => Console.WriteLine(n));
+    private static string _PrettyQuotesPairs(string fileName) {
+        var occurrences = FindCharacterOccurrences(fileName, '“');
         char[] array = fileName.ToCharArray();
-        int pairCount = numbers.Count / 2;
+        int pairCount = occurrences.Count / 2;
         for (int i = 0; i < pairCount; i++) {
-            int pairA = numbers[i * 2 + 0];
-            int pairB = numbers[i * 2 + 1];
-            //Console.WriteLine(array[pairA] + " " + array[pairB]);
+            int pairA = occurrences[i * 2 + 0];
+            int pairB = occurrences[i * 2 + 1];
             array[pairA] = '❝';
             array[pairB] = '❞';
         }
         fileName = new string(array);
         return fileName;
     }
-    public static string SafeMetaData(string metadata, string replaceSurrogate = "★") {
+    public static string SafeFileName(
+        string fileName,
+        string replaceSurrogate = "✅",
+        bool prettyQuotesPairs = false
+        ) {
+        fileName = SafeSourceCode(
+            fileName,
+            dontReplacePeriod: true,
+            dontReplaceComma: false
+            );
+        fileName = fileName.Replace("\n", "↩");
+        fileName = JustOneSpace(fileName);
+        fileName = fileName
+            .Replace("　", " ")
+            ;
+        fileName = ReplaceSurrogatePair(fileName, replaceSurrogate);
+        if (prettyQuotesPairs) {
+            fileName = _PrettyQuotesPairs(fileName);
+        }
+        return fileName;
+    }
+    public static string SafeMetaData(
+        string metadata,
+        string replaceSurrogate = "✅",
+        bool prettyQuotesPairs = false
+        ) {
         metadata = metadata
             .Replace("\"", "“")
             .Replace("'", "‘")
             .Replace("\\", "＼")
             ;
         metadata = ReplaceSurrogatePair(metadata, replaceSurrogate);
+        if (prettyQuotesPairs) {
+            metadata = _PrettyQuotesPairs(metadata);
+        }
         return metadata;
     }
 }
