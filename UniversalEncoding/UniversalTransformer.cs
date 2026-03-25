@@ -81,7 +81,7 @@ public class UniversalTransformer {
         //
         return codeString;
     }
-    public static string SafeFileName(string fileName, string replaceSurrogate = "★") {
+    public static string SafeFileName(string fileName, string replaceSurrogate = "✅") {
         fileName = SafeSourceCode(
             fileName,
             dontReplacePeriod: true,
@@ -92,14 +92,13 @@ public class UniversalTransformer {
             ;
         fileName = ReplaceSurrogatePair(fileName, replaceSurrogate);
         var numbers = FindCharacterOccurrences(fileName, '“');
-        numbers.ForEach(n => Console.WriteLine(n));
+        //numbers.ForEach(n => Console.WriteLine(n));
         char[] array = fileName.ToCharArray();
-        //array[1] = 'p'; // Modify the character at index 1 to 'p'
         int pairCount = numbers.Count / 2;
         for (int i = 0; i < pairCount; i++) {
             int pairA = numbers[i * 2 + 0];
             int pairB = numbers[i * 2 + 1];
-            Console.WriteLine(array[pairA] + " " + array[pairB]);
+            //Console.WriteLine(array[pairA] + " " + array[pairB]);
             array[pairA] = '❝';
             array[pairB] = '❞';
         }
