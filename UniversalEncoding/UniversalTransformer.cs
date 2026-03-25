@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Global;
@@ -6,6 +8,14 @@ namespace Global;
 public class UniversalTransformer {
     public static int Add2(int a, int b) {
         return a + b;
+    }
+    public static List<int> FindCharacterOccurrences(string input, char targetChar) {
+        List<int> occurrences = input
+            .Select((character, index) => new { character, index })
+            .Where(item => item.character == targetChar)
+            .Select(item => item.index)
+            .ToList();
+        return occurrences;
     }
     public static string ReplaceSurrogatePair(string str, string replaceSurrogate = "★") {
         if (replaceSurrogate == "") {
@@ -81,6 +91,9 @@ public class UniversalTransformer {
             .Replace("　", " ")
             ;
         fileName = ReplaceSurrogatePair(fileName, replaceSurrogate);
+        var numbers = FindCharacterOccurrences(fileName, '“');
+        //Console.WriteLine(numbers);
+        numbers.ForEach(n => Console.WriteLine(n));
         return fileName;
     }
     public static string SafeMetaData(string metadata, string replaceSurrogate = "★") {
