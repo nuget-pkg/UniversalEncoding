@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Global;
 
@@ -103,8 +102,6 @@ public static class UniversalTransformer {
                 .Replace(")", "﴿")
                 .Replace("[", "⁅")
                 .Replace("]", "⁆")
-                //.Replace("{", "꒰")
-                //.Replace("}", "꒱")
                 .Replace("{", "【")
                 .Replace("}", "】")
                 .Replace("<", "≪")
@@ -113,27 +110,24 @@ public static class UniversalTransformer {
                 .Replace("-", "ー")
                 .Replace("*", "＊")
                 .Replace("=", "＝")
-                ;
+                .Replace(",", "⸝") /**/
+            ;
         }
         return baseName;
     }
     public static string SafeSourceCode(
         string text,
         bool unicodeEacape = true,
-        bool asSingleLine = false,
-        bool dontReplacePeriod = false,
-        bool dontReplaceComma = false
+        bool keepPeriodAsIs = false,
+        bool asSingleLine = false
         ) {
         text = JustOneLineFeed(text);
         if (unicodeEacape) {
             text = UnicodeEacape(text);
         }
         text = SafeBaseName(text, followRecommendation: true);
-        if (!dontReplacePeriod) {
-            text = text.Replace(".", "．");
-        }
-        if (!dontReplaceComma) {
-            text = text.Replace(",", "，");
+        if (!keepPeriodAsIs) {
+            text = text.Replace(".", "◉");
         }
         if (asSingleLine) {
             text = text.Replace("\n", "↩");
@@ -145,6 +139,7 @@ public static class UniversalTransformer {
         restored =
             restored
             .Replace("↩", "\n")
+
             .Replace("❗", "!")
             .Replace("❓", "?")
 
@@ -171,8 +166,6 @@ public static class UniversalTransformer {
             .Replace("⁅", "[")
             .Replace("⁆", "]")
 
-            //.Replace("꒰", "{")
-            //.Replace("꒱", "}")
             .Replace("【", "{")
             .Replace("】", "}")
 
@@ -185,13 +178,11 @@ public static class UniversalTransformer {
             .Replace("／", "/")
             .Replace("＝", "=")
 
-#if true
             .Replace("❝", "\"")
             .Replace("❞", "\"")
-#else
-            .Replace("“”", "\"")
-            .Replace(" ”", "\"")
-#endif
+
+            .Replace("⸝", ",")
+            .Replace("◉", ".")
         ;
         restored = UnicodeUnescape(restored);
         return restored;
@@ -203,34 +194,29 @@ public static class UniversalTransformer {
         for (int i = 0; i < pairCount; i++) {
             int pairA = occurrences[i * 2 + 0];
             int pairB = occurrences[i * 2 + 1];
-            //“ ”
-#if true
             array[pairA] = '❝';
             array[pairB] = '❞';
-#else
-            array[pairA] = '“';
-            array[pairB] = '”';
-#endif
         }
         fileName = new string(array);
         return fileName;
     }
     public static string SafeFileName(
         string fileName,
-        string replaceSurrogate = "✅",
-        bool prettyQuotesPairs = false
+        bool keepPeriodAsIs = true,
+        bool prettyQuotesPairs = false,
+        string replaceSurrogate = "✅"
         ) {
         fileName = SafeSourceCode(
             fileName,
             unicodeEacape: false,
-            dontReplacePeriod: true,
-            dontReplaceComma: false
+            keepPeriodAsIs: keepPeriodAsIs
             );
         fileName = fileName.Replace("\n", "↩");
-        fileName = JustOneSpace(fileName);
         fileName = fileName
-            .Replace("　", " ")
+            //.Replace("　", " ")
+            .Replace("\u3000", " ") //全角スペースを半角スペースに統一する
             ;
+        fileName = JustOneSpace(fileName);
         fileName = ReplaceSurrogatePair(fileName, replaceSurrogate);
         if (prettyQuotesPairs) {
             fileName = _PrettyQuotesPairs(fileName);
@@ -239,8 +225,8 @@ public static class UniversalTransformer {
     }
     public static string SafeMetaData(
         string metadata,
-        string replaceSurrogate = "✅",
-        bool prettyQuotesPairs = false
+        bool prettyQuotesPairs = false,
+        string replaceSurrogate = "✅"
         ) {
         metadata = metadata
             .Replace("\"", "“")
