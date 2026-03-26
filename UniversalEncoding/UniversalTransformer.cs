@@ -70,7 +70,7 @@ public static class UniversalTransformer {
         // [⭕ファイル名に使えない文字 - Google](https://bit.ly/invalid-filename-chars)
         // \ / : * ? " < > |
         baseName = baseName
-            .Replace("\\", "￥")
+            .Replace("\\", "＼")
             .Replace("/", "／")
             .Replace(":", "：")
             .Replace("*", "＊")
@@ -83,7 +83,8 @@ public static class UniversalTransformer {
         if (followRecommendation) {
             // Not necessary; but NO ONE SHOULD USE these charcters for a filename!
             baseName = baseName
-                .Replace("\\", "￥")
+                .Replace("\\", "＼")
+                //"＼"
                 .Replace("/", "／")
                 .Replace("?", "❓")
                 .Replace("!", "❗")
@@ -180,8 +181,10 @@ public static class UniversalTransformer {
             .Replace("／", "/")
             .Replace("＝", "=")
 
-            .Replace("❝", "\"")
-            .Replace("❞", "\"")
+            //.Replace("❝", "\"")
+            //.Replace("❞", "\"")
+            .Replace("“”", "\"")
+            .Replace(" ”", "\"")
         ;
         restored = UnicodeUnescape(restored);
         return restored;
@@ -193,8 +196,11 @@ public static class UniversalTransformer {
         for (int i = 0; i < pairCount; i++) {
             int pairA = occurrences[i * 2 + 0];
             int pairB = occurrences[i * 2 + 1];
-            array[pairA] = '❝';
-            array[pairB] = '❞';
+            //“ ”
+            //array[pairA] = '❝';
+            //array[pairB] = '❞';
+            array[pairA] = '“';
+            array[pairB] = '”';
         }
         fileName = new string(array);
         return fileName;
