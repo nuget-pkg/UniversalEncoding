@@ -63,7 +63,10 @@ public static class UniversalTransformer {
 #endif
         return str;
     }
-    public static string SafeBaseName(string baseName) {
+    public static string SafeBaseName(
+        string baseName,
+        bool followRecommendation = false
+        ) {
         // [⭕ファイル名に使えない文字 - Google](https://bit.ly/invalid-filename-chars)
         // \ / : * ? " < > |
         baseName = baseName
@@ -76,8 +79,39 @@ public static class UniversalTransformer {
             .Replace("<", "≪")
             .Replace(">", "≫")
             .Replace("|", "￤")
-            .Replace("!", "❗") // Not necessary; but NO ONE USE this charcter for filename!
             ;
+        if (followRecommendation) {
+            // Not necessary; but NO ONE SHOULD USE these charcters for a filename!
+            baseName = baseName
+                .Replace("\\", "￥")
+                .Replace("/", "／")
+                .Replace("?", "❓")
+                .Replace("!", "❗")
+                .Replace(":", "：")
+                .Replace(";", "；")
+                .Replace("'", "‘")
+                .Replace("`", "｀")
+                .Replace("#", "＃")
+                .Replace("%", "％")
+                .Replace("$", "＄")
+                .Replace("&", "＆")
+                .Replace("^", "＾")
+                .Replace("~", "～")
+                .Replace("|", "￤")
+                .Replace("(", "﴾")
+                .Replace(")", "﴿")
+                .Replace("[", "⁅")
+                .Replace("]", "⁆")
+                .Replace("{", "꒰")
+                .Replace("}", "꒱")
+                .Replace("<", "≪")
+                .Replace(">", "≫")
+                .Replace("+", "＋")
+                .Replace("-", "ー")
+                .Replace("*", "＊")
+                .Replace("=", "＝")
+                ;
+        }
         return baseName;
     }
     public static string SafeSourceCode(
@@ -91,45 +125,7 @@ public static class UniversalTransformer {
         if (unicodeEacape) {
             text = UnicodeEacape(text);
         }
-        text = text
-            .Replace("!", "❗")
-            .Replace("?", "❓")
-
-            .Replace("\"", "“")
-            .Replace("'", "‘")
-            .Replace("`", "｀")
-
-            .Replace("#", "＃")
-            .Replace("%", "％")
-            .Replace("&", "＆")
-
-            .Replace("^", "＾")
-            .Replace("~", "～")
-
-            .Replace("\\", "＼")
-            .Replace("|", "￤")
-
-            .Replace(";", "；")
-            .Replace(":", "：")
-
-            .Replace("(", "﴾")
-            .Replace(")", "﴿")
-
-            .Replace("[", "⁅")
-            .Replace("]", "⁆")
-
-            .Replace("{", "꒰")
-            .Replace("}", "꒱")
-
-            .Replace("<", "≪")
-            .Replace(">", "≫")
-
-            .Replace("+", "＋")
-            .Replace("-", "ー")
-            .Replace("*", "＊")
-            .Replace("/", "／")
-            .Replace("=", "＝")
-            ;
+        text = SafeBaseName(text, followRecommendation: true);
         if (!dontReplacePeriod) {
             text = text.Replace(".", "．");
         }
@@ -183,7 +179,10 @@ public static class UniversalTransformer {
             .Replace("＊", "*")
             .Replace("／", "/")
             .Replace("＝", "=")
-            ;
+
+            .Replace("❝", "\"")
+            .Replace("❞", "\"")
+        ;
         restored = UnicodeUnescape(restored);
         return restored;
     }
