@@ -185,10 +185,13 @@ public static class UniversalTransformer {
             .Replace("／", "/")
             .Replace("＝", "=")
 
-            //.Replace("❝", "\"")
-            //.Replace("❞", "\"")
+#if true
+            .Replace("❝", "\"")
+            .Replace("❞", "\"")
+#else
             .Replace("“”", "\"")
             .Replace(" ”", "\"")
+#endif
         ;
         restored = UnicodeUnescape(restored);
         return restored;
@@ -201,10 +204,13 @@ public static class UniversalTransformer {
             int pairA = occurrences[i * 2 + 0];
             int pairB = occurrences[i * 2 + 1];
             //“ ”
-            //array[pairA] = '❝';
-            //array[pairB] = '❞';
+#if true
+            array[pairA] = '❝';
+            array[pairB] = '❞';
+#else
             array[pairA] = '“';
             array[pairB] = '”';
+#endif
         }
         fileName = new string(array);
         return fileName;
