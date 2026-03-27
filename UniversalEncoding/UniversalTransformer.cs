@@ -1,3 +1,4 @@
+//「」〘〙〔〕
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -100,8 +101,8 @@ public static class UniversalTransformer {
                 .Replace("|", "￤")
                 .Replace("(", "﴾")
                 .Replace(")", "﴿")
-                .Replace("[", "⁅")
-                .Replace("]", "⁆")
+                .Replace("[", "〘")
+                .Replace("]", "〙")
                 .Replace("{", "【")
                 .Replace("}", "】")
                 .Replace("<", "≪")
@@ -110,7 +111,7 @@ public static class UniversalTransformer {
                 .Replace("-", "ー")
                 .Replace("*", "＊")
                 .Replace("=", "＝")
-                .Replace(",", "⸝") /**/
+                .Replace(",", "▸") /**/
             ;
         }
         return baseName;
@@ -164,8 +165,8 @@ public static class UniversalTransformer {
             .Replace("﴾", "(")
             .Replace("﴿", ")")
 
-            .Replace("⁅", "[")
-            .Replace("⁆", "]")
+            .Replace("〘", "[")
+            .Replace("〙", "]")
 
             .Replace("【", "{")
             .Replace("】", "}")
@@ -182,7 +183,7 @@ public static class UniversalTransformer {
             .Replace("❝", "\"")
             .Replace("❞", "\"")
 
-            .Replace("⸝", ",") /**/
+            .Replace("▸", ",") /**/
             .Replace("◉", ".")
         ;
         restored = UnicodeUnescape(restored);
