@@ -25,6 +25,7 @@ static class Program {
                             Console.WriteLine("\u2757\u2753");
                             Console.WriteLine("“"); // this line causes a problem when encoded with SafeSourceCode(code, unicodeEacape: false)
                             Console.WriteLine(Add2(11, 22));
+                            EvaluateJavaScript(" console.log(`answer=${11+22}`); ");
                         }
                         private static int Add2(int x, int y)
                         {
@@ -49,7 +50,7 @@ static class Program {
             Log(restoredCode2, "⁅markup⁆[green]restoredCode2[/]");
             Log(restoredCode3, "⁅markup⁆[green]restoredCode3[/]");
 
-            string fname = """[1080p] ✅ 👀 🫧 💻 🌐 🎵 (全角スペース:"　　") <xml>aaa</xml> ; {Title}!? x=(11+22-33)*11/2; ,(🔥引火帝国🔥):"name1" 'name2'?.txt""";
+            string fname = """[1080p] ✅ 👀 🫧 💻 🌐 🎵 (全角スペース:"　　") `within backticks` <xml>aaa</xml> ; {Title}!? x=(11+22-33)*11/2; ,(🔥引火帝国🔥):"name1" 'name2'?.txt""";
             Log(SafeFileName(fname, prettyQuotesPairs: true), "⁅markup⁆[blue]adjusted file name[/]");
             Log(SafeFileName(fname, prettyQuotesPairs: true, replaceSurrogate: ""), "⁅markup⁆[green]adjusted file name (keeping surrogate pairs)[/]");
             Log(SafeFileName(fname, prettyQuotesPairs: true, replaceSurrogate: "@"), "⁅markup⁆[purple]adjusted file name (spicifying surrogate pairs' replacement)[/]");

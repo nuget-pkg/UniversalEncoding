@@ -90,7 +90,7 @@ public static class UniversalTransformer {
                 .Replace(":", "：")
                 .Replace(";", "；")
                 .Replace("'", "‘")
-                .Replace("`", "｀")
+                .Replace("`", "ヾ")
                 .Replace("#", "＃")
                 .Replace("%", "％")
                 .Replace("$", "＄")
@@ -145,7 +145,7 @@ public static class UniversalTransformer {
 
             .Replace("“", "\"")
             .Replace("‘", "'")
-            .Replace("｀", "`")
+            .Replace("ヾ", "`")
 
             .Replace("＃", "#")
             .Replace("％", "%")
@@ -154,6 +154,7 @@ public static class UniversalTransformer {
             .Replace("＾", "^")
             .Replace("～", "~")
 
+            .Replace("￥", "\\") /**/
             .Replace("＼", "\\")
             .Replace("￤", "|")
 
@@ -181,7 +182,7 @@ public static class UniversalTransformer {
             .Replace("❝", "\"")
             .Replace("❞", "\"")
 
-            .Replace("⸝", ",")
+            .Replace("⸝", ",") /**/
             .Replace("◉", ".")
         ;
         restored = UnicodeUnescape(restored);
