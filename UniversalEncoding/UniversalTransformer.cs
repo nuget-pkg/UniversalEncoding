@@ -46,14 +46,14 @@ public static class UniversalTransformer {
     public static int Add2(int a, int b) {
         return a + b;
     }
-    public static string UnicodeEacape(string text) {
+    public static string UnicodeEacape(string text, bool everything = false) {
         var sb = new StringBuilder();
         sb.Length = 0;
         if (sb.Capacity < text.Length + (text.Length / 10)) {
             sb.Capacity = text.Length + (text.Length / 10);
         }
         foreach (char c in text) {
-            if (c > 127) {
+            if (c > 127 && (everything || SpecialCharcters.Contains($"{c}"))) {
                 ushort val = c;
                 sb.Append("\\u").Append(val.ToString("X4"));
             } else {
