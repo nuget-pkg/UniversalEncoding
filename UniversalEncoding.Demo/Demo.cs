@@ -11,6 +11,7 @@ static class Program {
         try {
             SetupConsoleEncoding(Encoding.UTF8);
             UseAnsiConsole = true;
+            ShowLineNumbers = false;
             DebugOutput = true;
             string code =
                 """
@@ -55,6 +56,14 @@ static class Program {
             Log(SafeFileName(fname, prettyQuotesPairs: true, replaceSurrogate: ""), "⁅markup⁆[green]adjusted file name (keeping surrogate pairs)[/]");
             Log(SafeFileName(fname, prettyQuotesPairs: true, replaceSurrogate: "@"), "⁅markup⁆[purple]adjusted file name (spicifying surrogate pairs' replacement)[/]");
             Log(SafeFileName(code));
+
+            for (int i = 0; i < UniversalTransformer.SpecialCharcters.Count; i++) {
+                string c = UniversalTransformer.SpecialCharcters[i];
+                Log(new { c, Length = c.Length });
+                if (c.Length != 1) {
+                    EasyObject.Panic();
+                }
+            }
 
             Console.WriteLine("\u2757\u2753"); // "❗❓"
         } catch (Exception ex) {
