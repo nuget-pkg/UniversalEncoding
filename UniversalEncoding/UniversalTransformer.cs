@@ -8,8 +8,6 @@ namespace Global;
 
 public static class UniversalTransformer {
     public static List<string> SpecialCharcters = [
-        "",
-        "",
         "＼",
         "／",
         "：",
@@ -47,6 +45,10 @@ public static class UniversalTransformer {
         "＊",
         "＝",
         "▶",
+        "❝",
+        "❞",
+        "▶",
+        "◉",
     ];
     public static int Add2(int a, int b) {
         return a + b;
