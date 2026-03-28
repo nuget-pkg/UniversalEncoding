@@ -18,9 +18,11 @@
   <PropertyGroup>
     <DebugType>full</DebugType>
   </PropertyGroup>
+  <!--
   <PropertyGroup>
     <StartupObject>Demo.Program</StartupObject>
   </PropertyGroup>
+  -->
   <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
@@ -35,17 +37,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="coverlet.collector" Version="8.0.1">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Global.Sys" Version="2026.328.1540.3" />
-    <PackageReference Include="NUnit" Version="4.5.1" />
-    <PackageReference Include="NUnit3TestAdapter" Version="6.2.0" />
-    <PackageReference Include="NUnit.Analyzers" Version="4.12.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+    <PackageReference Include="EasyObject" Version="*" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UniversalEncoding\UniversalEncoding.csproj" />
