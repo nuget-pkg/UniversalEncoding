@@ -1,5 +1,4 @@
 //「」〘〙〔〕
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +7,47 @@ using System.Text.RegularExpressions;
 namespace Global;
 
 public static class UniversalTransformer {
+    public static List<string> SpecialCharcters = [
+        "",
+        "",
+        "＼",
+        "／",
+        "：",
+        "＊",
+        "❓",
+        "“",
+        "≪",
+        "≫",
+        "￤",
+        "＼",
+        "／",
+        "❓",
+        "❗",
+        "：",
+        "；",
+        "‘",
+        "ヾ",
+        "＃",
+        "％",
+        "＄",
+        "＆",
+        "＾",
+        "～",
+        "￤",
+        "﴾",
+        "﴿",
+        "〘",
+        "〙",
+        "【",
+        "】",
+        "≪",
+        "≫",
+        "＋",
+        "ー",
+        "＊",
+        "＝",
+        "▶",
+    ];
     public static int Add2(int a, int b) {
         return a + b;
     }
@@ -84,7 +124,6 @@ public static class UniversalTransformer {
             // Not necessary; but NO ONE SHOULD USE these charcters for a filename!
             baseName = baseName
                 .Replace("\\", "＼")
-                //"＼"
                 .Replace("/", "／")
                 .Replace("?", "❓")
                 .Replace("!", "❗")
@@ -111,8 +150,7 @@ public static class UniversalTransformer {
                 .Replace("-", "ー")
                 .Replace("*", "＊")
                 .Replace("=", "＝")
-                //.Replace(",", "▸") /**/
-                .Replace(",", "▶") /**/
+                .Replace(",", "▶")
             ;
         }
         return baseName;
@@ -184,8 +222,7 @@ public static class UniversalTransformer {
             .Replace("❝", "\"")
             .Replace("❞", "\"")
 
-            //.Replace("▸", ",") /**/
-            .Replace("▶", ",") /**/
+            .Replace("▶", ",")
             .Replace("◉", ".")
         ;
         restored = UnicodeUnescape(restored);
