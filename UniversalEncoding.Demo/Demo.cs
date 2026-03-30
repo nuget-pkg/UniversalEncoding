@@ -4,16 +4,12 @@ using System.Text;
 using Global;
 using static Global.EasyObject;
 using static Global.EasySystem;
-
 #pragma warning disable CS0162 // 到達できないコードが検出されました
-
-try
-{
+try {
     SetupConsoleEncoding(Encoding.UTF8);
     UseAnsiConsole = true;
     ShowLineNumbers = false;
     DebugOutput = true;
-
     string fname =
         """[1080p]✅👀🫧💻🌐`within backticks`<xml>aaa</xml>;{Title}!?x=(11+22-33)*11/2;,(🔥引火帝国🔥):"name1"'name2'?.txt""";
     Log(UniversalTransformer.SafeFileName(fname, prettyQuotesPairs: true),
@@ -22,7 +18,6 @@ try
         "⁅markup⁆[green]adjusted file name (keeping surrogate pairs)[/]");
     Log(UniversalTransformer.SafeFileName(fname, prettyQuotesPairs: true, replaceSurrogate: "@"),
         "⁅markup⁆[purple]adjusted file name (specifying surrogate pairs' replacement)[/]");
-
     string code =
         """
         namespace HelloWorldApp
@@ -46,7 +41,6 @@ try
             }
         }
         """;
-
     string safeCode1 = UniversalTransformer.SafeSourceCode(code); // [DEFAULT] unicodeEacape: true
     Log(safeCode1, "safeCode1"); // 
     // string
@@ -55,23 +49,18 @@ try
     // //Log(safeCode2, "safeCode2");
     // string safeCode3 = UniversalTransformer.SafeSourceCode(code, asSingleLine: true);
     // //Log(safeCode3, "safeCode3");
-
     string restoredCode1 = UniversalTransformer.RestoreSourceCode(safeCode1);
     //string restoredCode2 = UniversalTransformer.RestoreSourceCode(safeCode2);
     //string restoredCode3 = UniversalTransformer.RestoreSourceCode(safeCode3);
-
     Log(restoredCode1, "⁅markup⁆[green]restoredCode1[/]");
     //Log(restoredCode2, "⁅markup⁆[green]restoredCode2[/]");
     //Log(restoredCode3, "⁅markup⁆[green]restoredCode3[/]");
-
-    if (false)
-    {
+    if (false) {
         string sample = File.ReadAllText(GitProjectFile(GetCwd(), "UniversalEncoding.Demo", "assets", "sample.txt")!);
         string escaped = UniversalTransformer.UnicodeEscape(sample);
         Log(escaped, "escaped");
     }
 }
-catch (Exception ex)
-{
-    Panic(ex);
+catch (Exception ex) {
+    Abort(ex);
 }
