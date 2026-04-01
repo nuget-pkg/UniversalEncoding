@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using Global;
 using static Global.EasyObject;
-using static Global.EasySystem;
+using static Global.OpenSystem;
 #pragma warning disable CS0162 // 到達できないコードが検出されました
 try {
     SetupConsoleEncoding(Encoding.UTF8);
@@ -42,7 +42,7 @@ try {
         }
         """;
     string safeCode1 = UniversalTransformer.SafeSourceCode(code); // [DEFAULT] unicodeEacape: true
-    Log(safeCode1, "safeCode1"); // 
+    Break(safeCode1, "safeCode1"); // 
     // string
     //     safeCode2 = UniversalTransformer.SafeSourceCode(code,
     //         unicodeEacape: false); // DON'T USE `unicodeEacape: false` if you have PLAN OF RESTORING!
@@ -52,7 +52,7 @@ try {
     string restoredCode1 = UniversalTransformer.RestoreSourceCode(safeCode1);
     //string restoredCode2 = UniversalTransformer.RestoreSourceCode(safeCode2);
     //string restoredCode3 = UniversalTransformer.RestoreSourceCode(safeCode3);
-    Log(restoredCode1, "⁅markup⁆[green]restoredCode1[/]");
+    Break(restoredCode1, "⁅markup⁆[green]restoredCode1[/]");
     //Log(restoredCode2, "⁅markup⁆[green]restoredCode2[/]");
     //Log(restoredCode3, "⁅markup⁆[green]restoredCode3[/]");
     if (false) {
