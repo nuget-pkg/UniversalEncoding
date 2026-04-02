@@ -3,12 +3,12 @@ using System.IO;
 using System.Text;
 using Global;
 using static Global.EasyObject;
-using static Global.OpenSystem;
+using static Global.HyperOperatingSystem;
 #pragma warning disable CS0162 // 到達できないコードが検出されました
 try {
     SetupConsoleEncoding(Encoding.UTF8);
     UseAnsiConsole = true;
-    ShowLineNumbers = false;
+    //ShowLineNumbers = false;
     DebugOutput = true;
     string fname =
         """[1080p]✅👀🫧💻🌐`within backticks`<xml>aaa</xml>;{Title}!?x=(11+22-33)*11/2;,(🔥引火帝国🔥):"name1"'name2'?.txt""";

@@ -37,7 +37,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="EasyObject" Version="2026.402.810.48" />
+    <PackageReference Include="EasyObject" Version="2026.402.2005.12" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UniversalEncoding\UniversalEncoding.csproj" />
