@@ -38,9 +38,4 @@
     <ItemGroup>
         <ProjectReference Include="..\UniversalEncoding\UniversalEncoding.csproj" />
     </ItemGroup>
-    <!--
-        <ItemGroup>
-        <Using Include="NUnit.Framework" />
-        </ItemGroup>
-    -->
 </Project>
